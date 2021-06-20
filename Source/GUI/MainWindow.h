@@ -31,6 +31,7 @@ public:
   void onOpenMenViewer();
   void onOpenMemViewerWithAddress(u32 address);
   void updateMem2Status();
+  QLabel* getDolphinStatus() { return m_lblDolphinStatus;}
 
   void onOpenWatchFile();
   void onSaveWatchFile();

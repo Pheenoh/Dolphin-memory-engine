@@ -10,6 +10,8 @@ namespace DolphinComm
 class IDolphinProcess
 {
 public:
+
+  u64 getThing() { return m_emuRAMAddressStart; }
   virtual ~IDolphinProcess()
   {
   }

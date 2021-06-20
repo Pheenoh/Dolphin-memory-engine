@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5.0)
-project(Dolphin-memory-engine)
+project(dme)
 
 if(WIN32)
     set(DolphinProcessSrc DolphinProcess/Windows/WindowsDolphinProcess.cpp)
@@ -49,6 +49,8 @@ add_executable(Dolphin-memory-engine ${GUI_TYPE} ${SRCS})
 target_link_libraries(Dolphin-memory-engine Qt5::Widgets)
 target_link_libraries(Dolphin-memory-engine Qt5::Gui)
 target_link_libraries(Dolphin-memory-engine Qt5::Core)
+
+include_directories(CLI/)
 
 if(WIN32)
     if($<CONFIG:Debug>)
