@@ -18,19 +18,20 @@ void test()
 int main(int argc, char** argv)
 {
   CLI::App CLIapp{"App description"};
-  bool quitFlag{false};
-  CLIapp.add_option("--q", quitFlag, "Quits the program");
+  u32 crashAddress{0};
+  CLIapp.add_option("-c,--crash-address", crashAddress, "Quits the program");
   CLI11_PARSE(CLIapp, argc, argv);
 
-  if (quitFlag)
+  if (crashAddress)
   {
     DolphinComm::DolphinAccessor::hook();
-    char addressBuffer[4] = {0};
-    std::cout << DolphinComm::DolphinAccessor::getEmuRAMAddressStart() << std::endl;
-    u32 offset = Common::dolphinAddrToOffset(0x80000000, DolphinComm::DolphinAccessor::getMEM1ToMEM2Distance());
-    DolphinComm::DolphinAccessor::readFromRAM(0x450580, addressBuffer, 4, false);
-    std::cout << addressBuffer << std::endl;
-    if (addressBuffer[3] == 1) {
+    crashAddress = crashAddress - 0x80000000;
+    u32 crashFlag;
+    char crashFlagBuffer[sizeof(u32)] = {0};
+    DolphinComm::DolphinAccessor::readFromRAM(crashAddress, crashFlagBuffer, sizeof(u32), true);
+    std::memcpy(&crashFlag, crashFlagBuffer, sizeof(u32));
+
+    if (crashFlag == 1) {
       // if this is 1 then myExceptionCallback ran
       std::cout << "Game crashed!" <<  std::endl;
       return 1;
